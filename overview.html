@@ -37,23 +37,23 @@
                             <a href="overview.html" class="list-group-item list-group-item-action active">
                                 <i class="fas fa-chart-line me-2"></i>Overview
                             </a>
-                            <a href="index.html#platform" class="list-group-item list-group-item-action">
+                            <a href="index.html#platform" class="list-group-item list-group-item-action" onclick="navigateToPillar('platform')">
                                 <i class="fas fa-server me-2"></i>Platform
                                 <span class="badge bg-secondary float-end" id="platform-progress">0/25</span>
                             </a>
-                            <a href="index.html#data" class="list-group-item list-group-item-action">
+                            <a href="index.html#data" class="list-group-item list-group-item-action" onclick="navigateToPillar('data')">
                                 <i class="fas fa-database me-2"></i>Data
                                 <span class="badge bg-secondary float-end" id="data-progress">0/25</span>
                             </a>
-                            <a href="index.html#ml" class="list-group-item list-group-item-action">
+                            <a href="index.html#ml" class="list-group-item list-group-item-action" onclick="navigateToPillar('ml')">
                                 <i class="fas fa-brain me-2"></i>Machine Learning
                                 <span class="badge bg-secondary float-end" id="ml-progress">0/25</span>
                             </a>
-                            <a href="index.html#genai" class="list-group-item list-group-item-action">
+                            <a href="index.html#genai" class="list-group-item list-group-item-action" onclick="navigateToPillar('genai')">
                                 <i class="fas fa-robot me-2"></i>Generative AI
                                 <span class="badge bg-secondary float-end" id="genai-progress">0/25</span>
                             </a>
-                            <a href="index.html#recommendations" class="list-group-item list-group-item-action">
+                            <a href="index.html#recommendations" class="list-group-item list-group-item-action" onclick="navigateToPillar('recommendations')">
                                 <i class="fas fa-lightbulb me-2"></i>Recommendations
                                 <span class="badge bg-info float-end" id="recommendations-badge">View</span>
                             </a>
@@ -150,7 +150,7 @@
                         </div>
 
                         <div class="text-center mt-4">
-                            <a href="index.html#platform" class="btn btn-primary btn-lg">
+                            <a href="index.html#platform" class="btn btn-primary btn-lg" onclick="navigateToPillar('platform')">
                                 <i class="fas fa-play me-2"></i>Start Assessment
                             </a>
                         </div>
@@ -250,6 +250,15 @@
             // Update progress from localStorage if available
             updateProgressFromStorage();
         });
+
+        // Navigation function to handle pillar navigation
+        function navigateToPillar(pillar) {
+            // Store the target pillar in localStorage for the main page to pick up
+            localStorage.setItem('navigateToPillar', pillar);
+            
+            // Navigate to the main page
+            window.location.href = 'index.html#' + pillar;
+        }
 
         function updateProgressFromStorage() {
             try {

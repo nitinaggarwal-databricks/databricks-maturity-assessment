@@ -16,6 +16,7 @@ class DatabricksAssessment {
                 this.updateProgress();
                 this.renderContent(); // Ensure content is rendered on initialization
                 this.testNavigationElements(); // Test navigation elements
+                this.handleHashNavigation(); // Handle URL hash navigation
             });
         } else {
             this.setupEventListeners();
@@ -23,6 +24,26 @@ class DatabricksAssessment {
             this.updateProgress();
             this.renderContent(); // Ensure content is rendered on initialization
             this.testNavigationElements(); // Test navigation elements
+            this.handleHashNavigation(); // Handle URL hash navigation
+        }
+    }
+
+    handleHashNavigation() {
+        // Check if there's a hash in the URL and navigate to that pillar
+        const hash = window.location.hash.substring(1); // Remove the # symbol
+        const storedPillar = localStorage.getItem('navigateToPillar');
+        
+        // Priority: stored pillar from overview page, then URL hash
+        const targetPillar = storedPillar || hash;
+        
+        if (targetPillar && ['platform', 'data', 'ml', 'genai', 'recommendations'].includes(targetPillar)) {
+            console.log('Navigating to pillar:', targetPillar, 'from', storedPillar ? 'localStorage' : 'URL hash');
+            this.navigateToPillar(targetPillar);
+            
+            // Clear the stored navigation target
+            if (storedPillar) {
+                localStorage.removeItem('navigateToPillar');
+            }
         }
     }
 
