@@ -30,6 +30,7 @@ class DatabricksAssessment {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
                 const pillar = e.currentTarget.getAttribute('data-pillar');
+                console.log('Navigation clicked:', pillar); // Debug log
                 this.navigateToPillar(pillar);
             });
         });
@@ -53,11 +54,20 @@ class DatabricksAssessment {
     }
 
     navigateToPillar(pillar) {
+        console.log('Navigating to pillar:', pillar); // Debug log
+        
         // Update active navigation
         document.querySelectorAll('[data-pillar]').forEach(item => {
             item.classList.remove('active');
         });
-        document.querySelector(`[data-pillar="${pillar}"]`).classList.add('active');
+        
+        const targetElement = document.querySelector(`[data-pillar="${pillar}"]`);
+        if (targetElement) {
+            targetElement.classList.add('active');
+            console.log('Set active class on:', targetElement); // Debug log
+        } else {
+            console.error('Could not find element with data-pillar:', pillar); // Debug log
+        }
 
         // Update content
         this.currentPillar = pillar;
