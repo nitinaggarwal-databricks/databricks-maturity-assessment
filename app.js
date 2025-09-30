@@ -236,6 +236,9 @@ class DatabricksAssessment {
         // Load saved responses and populate form
         this.loadSavedResponses(pillar.name.toLowerCase().replace(' ', '-'));
         
+        // Initialize custom dropdowns
+        this.initializeCustomDropdowns();
+        
         // Update scores for the current pillar
         this.updatePillarScores(pillar.name.toLowerCase().replace(' ', '-'));
     }
@@ -291,21 +294,45 @@ class DatabricksAssessment {
                         </div>
                         <div class="col-md-3">
                             <label for="${questionId}-technicalPainPoints" class="form-label">Technical Pain Points</label>
-                            <select class="form-select" id="${questionId}-technicalPainPoints" name="${questionId}-technicalPainPoints" multiple>
-                                ${question.technicalPainPoints.map(painPoint => `
-                                    <option value="${painPoint}">${painPoint}</option>
-                                `).join('')}
-                            </select>
-                            <small class="form-text text-muted">Ctrl/Cmd + click</small>
+                            <div class="custom-dropdown">
+                                <button type="button" class="dropdown-toggle form-select" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="selected-text">Select technical pain points</span>
+                                    <i class="fas fa-chevron-down float-end"></i>
+                                </button>
+                                <ul class="dropdown-menu custom-dropdown-menu" id="${questionId}-technicalPainPoints-menu">
+                                    ${question.technicalPainPoints.map(painPoint => `
+                                        <li>
+                                            <label class="dropdown-item-text">
+                                                <input type="checkbox" class="form-check-input me-2" 
+                                                       id="${questionId}-tech-${painPoint.replace(/\s+/g, '-').toLowerCase()}" 
+                                                       value="${painPoint}">
+                                                ${painPoint}
+                                            </label>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
                         </div>
                         <div class="col-md-3">
                             <label for="${questionId}-businessPainPoints" class="form-label">Business Pain Points</label>
-                            <select class="form-select" id="${questionId}-businessPainPoints" name="${questionId}-businessPainPoints" multiple>
-                                ${question.businessPainPoints.map(painPoint => `
-                                    <option value="${painPoint}">${painPoint}</option>
-                                `).join('')}
-                            </select>
-                            <small class="form-text text-muted">Ctrl/Cmd + click</small>
+                            <div class="custom-dropdown">
+                                <button type="button" class="dropdown-toggle form-select" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="selected-text">Select business pain points</span>
+                                    <i class="fas fa-chevron-down float-end"></i>
+                                </button>
+                                <ul class="dropdown-menu custom-dropdown-menu" id="${questionId}-businessPainPoints-menu">
+                                    ${question.businessPainPoints.map(painPoint => `
+                                        <li>
+                                            <label class="dropdown-item-text">
+                                                <input type="checkbox" class="form-check-input me-2" 
+                                                       id="${questionId}-biz-${painPoint.replace(/\s+/g, '-').toLowerCase()}" 
+                                                       value="${painPoint}">
+                                                ${painPoint}
+                                            </label>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
                         </div>
                     </div>
                     
@@ -491,15 +518,23 @@ class DatabricksAssessment {
                 const currentSelect = document.getElementById(`${questionId}_current`);
                 const desiredSelect = document.getElementById(`${questionId}_desired`);
                 
-                // Collect technical pain points from multiselect dropdown
-                const technicalPainPointsSelect = document.getElementById(`${questionId}-technicalPainPoints`);
-                const technicalPainPoints = technicalPainPointsSelect ? 
-                    Array.from(technicalPainPointsSelect.selectedOptions).map(option => option.value) : [];
+                // Collect technical pain points from checkboxes
+                const technicalPainPoints = [];
+                question.technicalPainPoints.forEach(painPoint => {
+                    const checkbox = document.getElementById(`${questionId}-tech-${painPoint.replace(/\s+/g, '-').toLowerCase()}`);
+                    if (checkbox && checkbox.checked) {
+                        technicalPainPoints.push(painPoint);
+                    }
+                });
                 
-                // Collect business pain points from multiselect dropdown
-                const businessPainPointsSelect = document.getElementById(`${questionId}-businessPainPoints`);
-                const businessPainPoints = businessPainPointsSelect ? 
-                    Array.from(businessPainPointsSelect.selectedOptions).map(option => option.value) : [];
+                // Collect business pain points from checkboxes
+                const businessPainPoints = [];
+                question.businessPainPoints.forEach(painPoint => {
+                    const checkbox = document.getElementById(`${questionId}-biz-${painPoint.replace(/\s+/g, '-').toLowerCase()}`);
+                    if (checkbox && checkbox.checked) {
+                        businessPainPoints.push(painPoint);
+                    }
+                });
                 
                 // Collect comments
                 const commentsTextarea = document.getElementById(`${questionId}-comments`);
@@ -540,18 +575,22 @@ class DatabricksAssessment {
                             }
                             
                             // Load technical pain points
-                            const technicalPainPointsSelect = document.getElementById(`${fullQuestionId}-technicalPainPoints`);
-                            if (technicalPainPointsSelect && response.technicalPainPoints) {
-                                Array.from(technicalPainPointsSelect.options).forEach(option => {
-                                    option.selected = response.technicalPainPoints.includes(option.value);
+                            if (response.technicalPainPoints) {
+                                response.technicalPainPoints.forEach(painPoint => {
+                                    const checkbox = document.getElementById(`${fullQuestionId}-tech-${painPoint.replace(/\s+/g, '-').toLowerCase()}`);
+                                    if (checkbox) {
+                                        checkbox.checked = true;
+                                    }
                                 });
                             }
                             
                             // Load business pain points
-                            const businessPainPointsSelect = document.getElementById(`${fullQuestionId}-businessPainPoints`);
-                            if (businessPainPointsSelect && response.businessPainPoints) {
-                                Array.from(businessPainPointsSelect.options).forEach(option => {
-                                    option.selected = response.businessPainPoints.includes(option.value);
+                            if (response.businessPainPoints) {
+                                response.businessPainPoints.forEach(painPoint => {
+                                    const checkbox = document.getElementById(`${fullQuestionId}-biz-${painPoint.replace(/\s+/g, '-').toLowerCase()}`);
+                                    if (checkbox) {
+                                        checkbox.checked = true;
+                                    }
                                 });
                             }
                             
@@ -567,6 +606,41 @@ class DatabricksAssessment {
         } catch (error) {
             console.log('Error loading saved responses:', error);
         }
+    }
+
+    initializeCustomDropdowns() {
+        // Initialize all custom dropdowns
+        document.querySelectorAll('.custom-dropdown').forEach(dropdown => {
+            const button = dropdown.querySelector('.dropdown-toggle');
+            const menu = dropdown.querySelector('.dropdown-menu');
+            const selectedText = dropdown.querySelector('.selected-text');
+            const checkboxes = dropdown.querySelectorAll('input[type="checkbox"]');
+            
+            // Update button text when checkboxes change
+            const updateButtonText = () => {
+                const checkedItems = Array.from(checkboxes).filter(cb => cb.checked);
+                if (checkedItems.length === 0) {
+                    selectedText.textContent = button.dataset.placeholder || 'Select options';
+                } else if (checkedItems.length === 1) {
+                    selectedText.textContent = checkedItems[0].value;
+                } else {
+                    selectedText.textContent = `${checkedItems.length} selected`;
+                }
+            };
+            
+            // Add event listeners to checkboxes
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateButtonText);
+            });
+            
+            // Prevent dropdown from closing when clicking inside
+            menu.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+            
+            // Set initial button text
+            updateButtonText();
+        });
     }
 
     navigateToNextPillar() {
