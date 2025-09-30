@@ -1,5 +1,10 @@
 /* Custom styles for Databricks Assessment Framework */
 
+/* Ensure overview content is visible by default */
+#overview-content {
+    display: block !important;
+}
+
 :root {
     --primary-color: #0073e6;
     --secondary-color: #6c757d;

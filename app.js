@@ -11,6 +11,7 @@ class DatabricksAssessment {
         this.setupEventListeners();
         this.loadAssessmentData();
         this.updateProgress();
+        this.renderContent(); // Ensure content is rendered on initialization
     }
 
     setupEventListeners() {
