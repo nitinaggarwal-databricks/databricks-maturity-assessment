@@ -34,26 +34,26 @@
                     </div>
                     <div class="card-body p-0">
                         <div class="list-group list-group-flush">
-                            <a href="#" class="list-group-item list-group-item-action active" data-pillar="overview">
+                            <a href="#" class="list-group-item list-group-item-action active" data-pillar="overview" onclick="assessment.navigateToPillar('overview'); return false;">
                                 <i class="fas fa-chart-line me-2"></i>Overview
                             </a>
-                            <a href="#" class="list-group-item list-group-item-action" data-pillar="platform">
+                            <a href="#" class="list-group-item list-group-item-action" data-pillar="platform" onclick="assessment.navigateToPillar('platform'); return false;">
                                 <i class="fas fa-server me-2"></i>Platform
                                 <span class="badge bg-secondary float-end" id="platform-progress">0/25</span>
                             </a>
-                            <a href="#" class="list-group-item list-group-item-action" data-pillar="data">
+                            <a href="#" class="list-group-item list-group-item-action" data-pillar="data" onclick="assessment.navigateToPillar('data'); return false;">
                                 <i class="fas fa-database me-2"></i>Data
                                 <span class="badge bg-secondary float-end" id="data-progress">0/25</span>
                             </a>
-                            <a href="#" class="list-group-item list-group-item-action" data-pillar="ml">
+                            <a href="#" class="list-group-item list-group-item-action" data-pillar="ml" onclick="assessment.navigateToPillar('ml'); return false;">
                                 <i class="fas fa-brain me-2"></i>Machine Learning
                                 <span class="badge bg-secondary float-end" id="ml-progress">0/25</span>
                             </a>
-                            <a href="#" class="list-group-item list-group-item-action" data-pillar="genai">
+                            <a href="#" class="list-group-item list-group-item-action" data-pillar="genai" onclick="assessment.navigateToPillar('genai'); return false;">
                                 <i class="fas fa-robot me-2"></i>Generative AI
                                 <span class="badge bg-secondary float-end" id="genai-progress">0/25</span>
                             </a>
-                            <a href="#" class="list-group-item list-group-item-action" data-pillar="recommendations">
+                            <a href="#" class="list-group-item list-group-item-action" data-pillar="recommendations" onclick="assessment.navigateToPillar('recommendations'); return false;">
                                 <i class="fas fa-lightbulb me-2"></i>Recommendations
                                 <span class="badge bg-info float-end" id="recommendations-badge">View</span>
                             </a>
