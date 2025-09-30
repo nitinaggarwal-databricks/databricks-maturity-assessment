@@ -39,20 +39,37 @@ class DatabricksAssessment {
         const overviewElement = document.querySelector('[data-pillar="overview"]');
         if (overviewElement) {
             console.log('Overview element found:', overviewElement);
+            // Test if we can manually trigger navigation
+            console.log('Testing manual navigation to overview...');
+            setTimeout(() => {
+                this.navigateToPillar('overview');
+            }, 1000);
         } else {
             console.error('Overview element NOT found!');
         }
+        
+        // Make navigation function available globally for testing
+        window.testNavigation = (pillar) => {
+            console.log('Manual test navigation to:', pillar);
+            this.navigateToPillar(pillar);
+        };
     }
 
     setupEventListeners() {
-        // Sidebar navigation - use event delegation for better reliability
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('[data-pillar]')) {
+        // Sidebar navigation - direct event listeners
+        const navigationItems = document.querySelectorAll('[data-pillar]');
+        console.log('Setting up event listeners for', navigationItems.length, 'navigation items');
+        
+        navigationItems.forEach(item => {
+            const pillar = item.getAttribute('data-pillar');
+            console.log('Adding listener for pillar:', pillar);
+            
+            item.addEventListener('click', (e) => {
                 e.preventDefault();
-                const pillar = e.target.closest('[data-pillar]').getAttribute('data-pillar');
-                console.log('Navigation clicked:', pillar); // Debug log
+                e.stopPropagation();
+                console.log('Direct click on pillar:', pillar);
                 this.navigateToPillar(pillar);
-            }
+            });
         });
 
         // Save progress button
