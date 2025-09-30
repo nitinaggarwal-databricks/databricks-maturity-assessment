@@ -15,24 +15,44 @@ class DatabricksAssessment {
                 this.loadAssessmentData();
                 this.updateProgress();
                 this.renderContent(); // Ensure content is rendered on initialization
+                this.testNavigationElements(); // Test navigation elements
             });
         } else {
             this.setupEventListeners();
             this.loadAssessmentData();
             this.updateProgress();
             this.renderContent(); // Ensure content is rendered on initialization
+            this.testNavigationElements(); // Test navigation elements
+        }
+    }
+
+    testNavigationElements() {
+        console.log('Testing navigation elements...');
+        const allPillars = document.querySelectorAll('[data-pillar]');
+        console.log('Found navigation elements:', allPillars.length);
+        allPillars.forEach((element, index) => {
+            const pillar = element.getAttribute('data-pillar');
+            console.log(`Element ${index}: ${pillar}`, element);
+        });
+        
+        // Specifically test overview element
+        const overviewElement = document.querySelector('[data-pillar="overview"]');
+        if (overviewElement) {
+            console.log('Overview element found:', overviewElement);
+        } else {
+            console.error('Overview element NOT found!');
         }
     }
 
     setupEventListeners() {
-        // Sidebar navigation
-        document.querySelectorAll('[data-pillar]').forEach(item => {
-            item.addEventListener('click', (e) => {
+        // Sidebar navigation - use event delegation for better reliability
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('[data-pillar]')) {
                 e.preventDefault();
-                const pillar = e.currentTarget.getAttribute('data-pillar');
+                const pillar = e.target.closest('[data-pillar]').getAttribute('data-pillar');
                 console.log('Navigation clicked:', pillar); // Debug log
                 this.navigateToPillar(pillar);
-            });
+            }
         });
 
         // Save progress button
@@ -67,6 +87,9 @@ class DatabricksAssessment {
             console.log('Set active class on:', targetElement); // Debug log
         } else {
             console.error('Could not find element with data-pillar:', pillar); // Debug log
+            // Try to find all elements with data-pillar attribute for debugging
+            const allPillars = document.querySelectorAll('[data-pillar]');
+            console.log('Available pillars:', Array.from(allPillars).map(el => el.getAttribute('data-pillar')));
         }
 
         // Update content
