@@ -272,75 +272,80 @@ class DatabricksAssessment {
                         </div>
                     </div>
                     
-                    <!-- Single row with 4 dropdowns -->
+                    <!-- Reorganized layout: 2 columns with stacked dropdowns and comments on the right -->
                     <div class="row g-3 mb-3">
+                        <!-- Left column: Current/Future State -->
                         <div class="col-md-3">
-                            <label for="${questionId}_current" class="form-label">Current State</label>
-                            <select class="form-select" id="${questionId}_current" onchange="assessment.updateProgress()">
-                                <option value="">Select current state</option>
-                                ${maturityLevels.map(level => 
-                                    `<option value="${level.value}">${level.value}</option>`
-                                ).join('')}
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="${questionId}_desired" class="form-label">Future State</label>
-                            <select class="form-select" id="${questionId}_desired" onchange="assessment.updateProgress()">
-                                <option value="">Select future state</option>
-                                ${maturityLevels.map(level => 
-                                    `<option value="${level.value}">${level.value}</option>`
-                                ).join('')}
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="${questionId}-technicalPainPoints" class="form-label">Technical Pain Points</label>
-                            <div class="custom-dropdown">
-                                <button type="button" class="dropdown-toggle form-select" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <span class="selected-text">Select technical pain points</span>
-                                    <i class="fas fa-chevron-down float-end"></i>
-                                </button>
-                                <ul class="dropdown-menu custom-dropdown-menu" id="${questionId}-technicalPainPoints-menu">
-                                    ${question.technicalPainPoints.map(painPoint => `
-                                        <li>
-                                            <label class="dropdown-item-text">
-                                                <input type="checkbox" class="form-check-input me-2" 
-                                                       id="${questionId}-tech-${painPoint.replace(/\s+/g, '-').toLowerCase()}" 
-                                                       value="${painPoint}">
-                                                ${painPoint}
-                                            </label>
-                                        </li>
-                                    `).join('')}
-                                </ul>
+                            <div class="mb-3">
+                                <label for="${questionId}_current" class="form-label">Current State</label>
+                                <select class="form-select" id="${questionId}_current" onchange="assessment.updateProgress()">
+                                    <option value="">Select current state</option>
+                                    ${maturityLevels.map(level => 
+                                        `<option value="${level.value}">${level.value}</option>`
+                                    ).join('')}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="${questionId}_desired" class="form-label">Future State</label>
+                                <select class="form-select" id="${questionId}_desired" onchange="assessment.updateProgress()">
+                                    <option value="">Select future state</option>
+                                    ${maturityLevels.map(level => 
+                                        `<option value="${level.value}">${level.value}</option>`
+                                    ).join('')}
+                                </select>
                             </div>
                         </div>
+                        
+                        <!-- Middle column: Technical/Business Pain Points -->
                         <div class="col-md-3">
-                            <label for="${questionId}-businessPainPoints" class="form-label">Business Pain Points</label>
-                            <div class="custom-dropdown">
-                                <button type="button" class="dropdown-toggle form-select" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <span class="selected-text">Select business pain points</span>
-                                    <i class="fas fa-chevron-down float-end"></i>
-                                </button>
-                                <ul class="dropdown-menu custom-dropdown-menu" id="${questionId}-businessPainPoints-menu">
-                                    ${question.businessPainPoints.map(painPoint => `
-                                        <li>
-                                            <label class="dropdown-item-text">
-                                                <input type="checkbox" class="form-check-input me-2" 
-                                                       id="${questionId}-biz-${painPoint.replace(/\s+/g, '-').toLowerCase()}" 
-                                                       value="${painPoint}">
-                                                ${painPoint}
-                                            </label>
-                                        </li>
-                                    `).join('')}
-                                </ul>
+                            <div class="mb-3">
+                                <label for="${questionId}-technicalPainPoints" class="form-label">Technical Pain Points</label>
+                                <div class="custom-dropdown">
+                                    <button type="button" class="dropdown-toggle form-select" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="selected-text">Select technical pain points</span>
+                                        <i class="fas fa-chevron-down float-end"></i>
+                                    </button>
+                                    <ul class="dropdown-menu custom-dropdown-menu" id="${questionId}-technicalPainPoints-menu">
+                                        ${question.technicalPainPoints.map(painPoint => `
+                                            <li>
+                                                <label class="dropdown-item-text">
+                                                    <input type="checkbox" class="form-check-input me-2" 
+                                                           id="${questionId}-tech-${painPoint.replace(/\s+/g, '-').toLowerCase()}" 
+                                                           value="${painPoint}">
+                                                    ${painPoint}
+                                                </label>
+                                            </li>
+                                        `).join('')}
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="${questionId}-businessPainPoints" class="form-label">Business Pain Points</label>
+                                <div class="custom-dropdown">
+                                    <button type="button" class="dropdown-toggle form-select" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="selected-text">Select business pain points</span>
+                                        <i class="fas fa-chevron-down float-end"></i>
+                                    </button>
+                                    <ul class="dropdown-menu custom-dropdown-menu" id="${questionId}-businessPainPoints-menu">
+                                        ${question.businessPainPoints.map(painPoint => `
+                                            <li>
+                                                <label class="dropdown-item-text">
+                                                    <input type="checkbox" class="form-check-input me-2" 
+                                                           id="${questionId}-biz-${painPoint.replace(/\s+/g, '-').toLowerCase()}" 
+                                                           value="${painPoint}">
+                                                    ${painPoint}
+                                                </label>
+                                            </li>
+                                        `).join('')}
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- Comments textarea -->
-                    <div class="row">
-                        <div class="col-12">
+                        
+                        <!-- Right column: Comments -->
+                        <div class="col-md-6">
                             <label for="${questionId}-comments" class="form-label">Comments</label>
-                            <textarea class="form-control" id="${questionId}-comments" name="${questionId}-comments" rows="3" placeholder="Add any additional comments or notes..."></textarea>
+                            <textarea class="form-control" id="${questionId}-comments" name="${questionId}-comments" rows="4" placeholder="Add any additional comments or notes..."></textarea>
                         </div>
                     </div>
                 </div>

@@ -185,7 +185,12 @@ body {
 
 .question-card textarea {
     resize: vertical;
-    min-height: 80px;
+    min-height: 120px;
+}
+
+/* Stacked layout styling */
+.question-card .col-md-3 .mb-3:last-child {
+    margin-bottom: 0 !important;
 }
 
 /* Custom Dropdown Styling */
