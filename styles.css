@@ -145,6 +145,26 @@ body {
     margin-top: 1rem;
 }
 
+.pain-points-section select[multiple] {
+    min-height: 120px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.pain-points-section select[multiple] option {
+    padding: 0.5rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.pain-points-section select[multiple] option:last-child {
+    border-bottom: none;
+}
+
+.pain-points-section select[multiple] option:checked {
+    background-color: var(--primary-color);
+    color: white;
+}
+
 .pain-points-section h6 {
     color: #6c757d;
     font-weight: 600;

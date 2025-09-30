@@ -233,6 +233,9 @@ class DatabricksAssessment {
         contentArea.innerHTML = html;
         document.getElementById('assessment-content').style.display = 'block';
         
+        // Load saved responses and populate form
+        this.loadSavedResponses(pillar.name.toLowerCase().replace(' ', '-'));
+        
         // Update scores for the current pillar
         this.updatePillarScores(pillar.name.toLowerCase().replace(' ', '-'));
     }
@@ -292,36 +295,30 @@ class DatabricksAssessment {
                     </div>
                     
                     <div class="pain-points-section">
-                        <h6><i class="fas fa-exclamation-triangle me-2"></i>Technical Pain Points</h6>
+                        <h6><i class="fas fa-exclamation-triangle me-2"></i>Pain Points</h6>
                         <div class="row">
-                            ${question.technicalPainPoints.map((painPoint, index) => `
-                                <div class="col-md-6">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" 
-                                               id="${questionId}_tech_${index}" 
-                                               value="${painPoint}">
-                                        <label class="form-check-label" for="${questionId}_tech_${index}">
-                                            ${painPoint}
-                                        </label>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                        
-                        <h6 class="mt-3"><i class="fas fa-briefcase me-2"></i>Business Pain Points</h6>
-                        <div class="row">
-                            ${question.businessPainPoints.map((painPoint, index) => `
-                                <div class="col-md-6">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" 
-                                               id="${questionId}_biz_${index}" 
-                                               value="${painPoint}">
-                                        <label class="form-check-label" for="${questionId}_biz_${index}">
-                                            ${painPoint}
-                                        </label>
-                                    </div>
-                                </div>
-                            `).join('')}
+                            <div class="col-md-6">
+                                <label for="${questionId}-technicalPainPoints" class="form-label text-danger">
+                                    <i class="fas fa-cogs me-1"></i>Technical Pain Points
+                                </label>
+                                <select class="form-select" id="${questionId}-technicalPainPoints" name="${questionId}-technicalPainPoints" multiple>
+                                    ${question.technicalPainPoints.map(painPoint => `
+                                        <option value="${painPoint}">${painPoint}</option>
+                                    `).join('')}
+                                </select>
+                                <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple options</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="${questionId}-businessPainPoints" class="form-label text-warning">
+                                    <i class="fas fa-briefcase me-1"></i>Business Pain Points
+                                </label>
+                                <select class="form-select" id="${questionId}-businessPainPoints" name="${questionId}-businessPainPoints" multiple>
+                                    ${question.businessPainPoints.map(painPoint => `
+                                        <option value="${painPoint}">${painPoint}</option>
+                                    `).join('')}
+                                </select>
+                                <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple options</small>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -499,23 +496,15 @@ class DatabricksAssessment {
                 const currentSelect = document.getElementById(`${questionId}_current`);
                 const desiredSelect = document.getElementById(`${questionId}_desired`);
                 
-                // Collect technical pain points
-                const technicalPainPoints = [];
-                question.technicalPainPoints.forEach((painPoint, index) => {
-                    const checkbox = document.getElementById(`${questionId}_tech_${index}`);
-                    if (checkbox && checkbox.checked) {
-                        technicalPainPoints.push(painPoint);
-                    }
-                });
+                // Collect technical pain points from multiselect dropdown
+                const technicalPainPointsSelect = document.getElementById(`${questionId}-technicalPainPoints`);
+                const technicalPainPoints = technicalPainPointsSelect ? 
+                    Array.from(technicalPainPointsSelect.selectedOptions).map(option => option.value) : [];
                 
-                // Collect business pain points
-                const businessPainPoints = [];
-                question.businessPainPoints.forEach((painPoint, index) => {
-                    const checkbox = document.getElementById(`${questionId}_biz_${index}`);
-                    if (checkbox && checkbox.checked) {
-                        businessPainPoints.push(painPoint);
-                    }
-                });
+                // Collect business pain points from multiselect dropdown
+                const businessPainPointsSelect = document.getElementById(`${questionId}-businessPainPoints`);
+                const businessPainPoints = businessPainPointsSelect ? 
+                    Array.from(businessPainPointsSelect.selectedOptions).map(option => option.value) : [];
                 
                 responses[dimensionKey][question.id] = {
                     current: currentSelect ? currentSelect.value : '',
@@ -527,6 +516,51 @@ class DatabricksAssessment {
         });
         
         return responses;
+    }
+
+    loadSavedResponses(pillar) {
+        try {
+            const savedResponses = localStorage.getItem('databricksAssessmentResponses');
+            if (savedResponses) {
+                const responses = JSON.parse(savedResponses);
+                if (responses[pillar]) {
+                    Object.entries(responses[pillar]).forEach(([dimensionKey, dimensionResponses]) => {
+                        Object.entries(dimensionResponses).forEach(([questionId, response]) => {
+                            const fullQuestionId = `${pillar}_${questionId}`;
+                            
+                            // Load current and desired maturity levels
+                            const currentSelect = document.getElementById(`${fullQuestionId}_current`);
+                            const desiredSelect = document.getElementById(`${fullQuestionId}_desired`);
+                            
+                            if (currentSelect && response.current) {
+                                currentSelect.value = response.current;
+                            }
+                            if (desiredSelect && response.desired) {
+                                desiredSelect.value = response.desired;
+                            }
+                            
+                            // Load technical pain points
+                            const technicalPainPointsSelect = document.getElementById(`${fullQuestionId}-technicalPainPoints`);
+                            if (technicalPainPointsSelect && response.technicalPainPoints) {
+                                Array.from(technicalPainPointsSelect.options).forEach(option => {
+                                    option.selected = response.technicalPainPoints.includes(option.value);
+                                });
+                            }
+                            
+                            // Load business pain points
+                            const businessPainPointsSelect = document.getElementById(`${fullQuestionId}-businessPainPoints`);
+                            if (businessPainPointsSelect && response.businessPainPoints) {
+                                Array.from(businessPainPointsSelect.options).forEach(option => {
+                                    option.selected = response.businessPainPoints.includes(option.value);
+                                });
+                            }
+                        });
+                    });
+                }
+            }
+        } catch (error) {
+            console.log('Error loading saved responses:', error);
+        }
     }
 
     navigateToNextPillar() {
