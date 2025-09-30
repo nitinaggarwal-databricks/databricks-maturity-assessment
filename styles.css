@@ -5,6 +5,11 @@
     display: block !important;
 }
 
+/* Fallback: ensure overview is visible even without JavaScript */
+.content-section:first-child {
+    display: block !important;
+}
+
 :root {
     --primary-color: #0073e6;
     --secondary-color: #6c757d;

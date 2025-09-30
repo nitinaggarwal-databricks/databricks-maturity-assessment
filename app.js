@@ -8,10 +8,20 @@ class DatabricksAssessment {
     }
 
     initializeApp() {
-        this.setupEventListeners();
-        this.loadAssessmentData();
-        this.updateProgress();
-        this.renderContent(); // Ensure content is rendered on initialization
+        // Wait for DOM to be fully loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                this.setupEventListeners();
+                this.loadAssessmentData();
+                this.updateProgress();
+                this.renderContent(); // Ensure content is rendered on initialization
+            });
+        } else {
+            this.setupEventListeners();
+            this.loadAssessmentData();
+            this.updateProgress();
+            this.renderContent(); // Ensure content is rendered on initialization
+        }
     }
 
     setupEventListeners() {
@@ -63,7 +73,10 @@ class DatabricksAssessment {
         });
 
         if (this.currentPillar === 'overview') {
-            document.getElementById('overview-content').style.display = 'block';
+            const overviewElement = document.getElementById('overview-content');
+            if (overviewElement) {
+                overviewElement.style.display = 'block';
+            }
         } else if (this.currentPillar === 'recommendations') {
             this.renderRecommendations();
         } else {
