@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Databricks Assessment Framework - Demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .demo-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin: 2rem auto;
+            max-width: 800px;
+            overflow: hidden;
+        }
+        .demo-header {
+            background: linear-gradient(135deg, #0073e6 0%, #0056b3 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        .demo-content {
+            padding: 2rem;
+        }
+        .feature-card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 1rem;
+        }
+        .btn-demo {
+            background: linear-gradient(135deg, #0073e6 0%, #0056b3 100%);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-demo:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 115, 230, 0.3);
+        }
+        .stats-row {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0073e6;
+        }
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="demo-container">
+            <div class="demo-header">
+                <h1><i class="fas fa-database me-3"></i>Databricks Technical Maturity Assessment Framework</h1>
+                <p class="lead mb-0">Comprehensive evaluation tool for your Databricks journey</p>
+            </div>
+            
+            <div class="demo-content">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h3>Welcome to the Demo</h3>
+                        <p class="text-muted">
+                            This is a comprehensive assessment framework designed to evaluate your organization's 
+                            technical maturity across five critical Databricks pillars. The framework provides 
+                            actionable recommendations based on the latest Databricks tools and features.
+                        </p>
+                        
+                        <div class="stats-row">
+                            <div class="row">
+                                <div class="col-md-3 stat-item">
+                                    <div class="stat-number">4</div>
+                                    <div class="stat-label">Assessment Pillars</div>
+                                </div>
+                                <div class="col-md-3 stat-item">
+                                    <div class="stat-number">100</div>
+                                    <div class="stat-label">Total Questions</div>
+                                </div>
+                                <div class="col-md-3 stat-item">
+                                    <div class="stat-number">25</div>
+                                    <div class="stat-label">Questions per Pillar</div>
+                                </div>
+                                <div class="col-md-3 stat-item">
+                                    <div class="stat-number">5</div>
+                                    <div class="stat-label">Maturity Levels</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h4>Key Features</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card feature-card">
+                                    <div class="card-body text-center">
+                                        <div class="feature-icon bg-primary text-white">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <h6>Comprehensive Assessment</h6>
+                                        <p class="small text-muted">Evaluate maturity across Platform, Data, ML, and GenAI</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card feature-card">
+                                    <div class="card-body text-center">
+                                        <div class="feature-icon bg-success text-white">
+                                            <i class="fas fa-lightbulb"></i>
+                                        </div>
+                                        <h6>Smart Recommendations</h6>
+                                        <p class="small text-muted">Get tailored recommendations based on latest Databricks tools</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card feature-card">
+                                    <div class="card-body text-center">
+                                        <div class="feature-icon bg-warning text-white">
+                                            <i class="fas fa-save"></i>
+                                        </div>
+                                        <h6>Progress Saving</h6>
+                                        <p class="small text-muted">Save and resume your assessment at any time</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card feature-card">
+                                    <div class="card-body text-center">
+                                        <div class="feature-icon bg-info text-white">
+                                            <i class="fas fa-download"></i>
+                                        </div>
+                                        <h6>Export Results</h6>
+                                        <p class="small text-muted">Download detailed reports and recommendations</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5><i class="fas fa-rocket me-2"></i>Quick Start</h5>
+                            </div>
+                            <div class="card-body">
+                                <ol class="small">
+                                    <li class="mb-2">Click "Start Assessment" to begin</li>
+                                    <li class="mb-2">Complete each pillar assessment</li>
+                                    <li class="mb-2">Select current and desired maturity levels</li>
+                                    <li class="mb-2">Identify pain points for each question</li>
+                                    <li class="mb-2">Save progress as needed</li>
+                                    <li class="mb-2">Review recommendations</li>
+                                    <li class="mb-2">Export results for planning</li>
+                                </ol>
+                                
+                                <div class="d-grid gap-2 mt-3">
+                                    <a href="index.html" class="btn btn-demo text-white">
+                                        <i class="fas fa-play me-2"></i>Start Assessment
+                                    </a>
+                                    <a href="README.md" class="btn btn-outline-primary">
+                                        <i class="fas fa-book me-2"></i>View Documentation
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card mt-3">
+                            <div class="card-header">
+                                <h6><i class="fas fa-info-circle me-2"></i>Assessment Pillars</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-server text-primary me-2"></i>
+                                    <small>Platform</small>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-database text-success me-2"></i>
+                                    <small>Data</small>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-brain text-info me-2"></i>
+                                    <small>Machine Learning</small>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-robot text-danger me-2"></i>
+                                    <small>Generative AI</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <p class="text-muted">
+                        <i class="fas fa-shield-alt me-1"></i>
+                        Your assessment data is stored locally and never shared
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
