@@ -269,56 +269,51 @@ class DatabricksAssessment {
                         </div>
                     </div>
                     
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label">Current Maturity State</label>
-                                <select class="form-select" id="${questionId}_current" onchange="assessment.updateProgress()">
-                                    <option value="">Select current state</option>
-                                    ${maturityLevels.map(level => 
-                                        `<option value="${level.value}">${level.label} - ${level.description}</option>`
-                                    ).join('')}
-                                </select>
-                            </div>
+                    <!-- Single row with 4 dropdowns -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-3">
+                            <label for="${questionId}_current" class="form-label">Current State</label>
+                            <select class="form-select" id="${questionId}_current" onchange="assessment.updateProgress()">
+                                <option value="">Select current state</option>
+                                ${maturityLevels.map(level => 
+                                    `<option value="${level.value}">${level.value}</option>`
+                                ).join('')}
+                            </select>
                         </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label">Desired Maturity State</label>
-                                <select class="form-select" id="${questionId}_desired" onchange="assessment.updateProgress()">
-                                    <option value="">Select desired state</option>
-                                    ${maturityLevels.map(level => 
-                                        `<option value="${level.value}">${level.label} - ${level.description}</option>`
-                                    ).join('')}
-                                </select>
-                            </div>
+                        <div class="col-md-3">
+                            <label for="${questionId}_desired" class="form-label">Future State</label>
+                            <select class="form-select" id="${questionId}_desired" onchange="assessment.updateProgress()">
+                                <option value="">Select future state</option>
+                                ${maturityLevels.map(level => 
+                                    `<option value="${level.value}">${level.value}</option>`
+                                ).join('')}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="${questionId}-technicalPainPoints" class="form-label">Technical Pain Points</label>
+                            <select class="form-select" id="${questionId}-technicalPainPoints" name="${questionId}-technicalPainPoints" multiple>
+                                ${question.technicalPainPoints.map(painPoint => `
+                                    <option value="${painPoint}">${painPoint}</option>
+                                `).join('')}
+                            </select>
+                            <small class="form-text text-muted">Ctrl/Cmd + click</small>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="${questionId}-businessPainPoints" class="form-label">Business Pain Points</label>
+                            <select class="form-select" id="${questionId}-businessPainPoints" name="${questionId}-businessPainPoints" multiple>
+                                ${question.businessPainPoints.map(painPoint => `
+                                    <option value="${painPoint}">${painPoint}</option>
+                                `).join('')}
+                            </select>
+                            <small class="form-text text-muted">Ctrl/Cmd + click</small>
                         </div>
                     </div>
                     
-                    <div class="pain-points-section">
-                        <h6><i class="fas fa-exclamation-triangle me-2"></i>Pain Points</h6>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label for="${questionId}-technicalPainPoints" class="form-label text-danger">
-                                    <i class="fas fa-cogs me-1"></i>Technical Pain Points
-                                </label>
-                                <select class="form-select" id="${questionId}-technicalPainPoints" name="${questionId}-technicalPainPoints" multiple>
-                                    ${question.technicalPainPoints.map(painPoint => `
-                                        <option value="${painPoint}">${painPoint}</option>
-                                    `).join('')}
-                                </select>
-                                <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple options</small>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="${questionId}-businessPainPoints" class="form-label text-warning">
-                                    <i class="fas fa-briefcase me-1"></i>Business Pain Points
-                                </label>
-                                <select class="form-select" id="${questionId}-businessPainPoints" name="${questionId}-businessPainPoints" multiple>
-                                    ${question.businessPainPoints.map(painPoint => `
-                                        <option value="${painPoint}">${painPoint}</option>
-                                    `).join('')}
-                                </select>
-                                <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple options</small>
-                            </div>
+                    <!-- Comments textarea -->
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="${questionId}-comments" class="form-label">Comments</label>
+                            <textarea class="form-control" id="${questionId}-comments" name="${questionId}-comments" rows="3" placeholder="Add any additional comments or notes..."></textarea>
                         </div>
                     </div>
                 </div>
@@ -506,11 +501,16 @@ class DatabricksAssessment {
                 const businessPainPoints = businessPainPointsSelect ? 
                     Array.from(businessPainPointsSelect.selectedOptions).map(option => option.value) : [];
                 
+                // Collect comments
+                const commentsTextarea = document.getElementById(`${questionId}-comments`);
+                const comments = commentsTextarea ? commentsTextarea.value : '';
+                
                 responses[dimensionKey][question.id] = {
                     current: currentSelect ? currentSelect.value : '',
                     desired: desiredSelect ? desiredSelect.value : '',
                     technicalPainPoints: technicalPainPoints,
-                    businessPainPoints: businessPainPoints
+                    businessPainPoints: businessPainPoints,
+                    comments: comments
                 };
             });
         });
@@ -553,6 +553,12 @@ class DatabricksAssessment {
                                 Array.from(businessPainPointsSelect.options).forEach(option => {
                                     option.selected = response.businessPainPoints.includes(option.value);
                                 });
+                            }
+                            
+                            // Load comments
+                            const commentsTextarea = document.getElementById(`${fullQuestionId}-comments`);
+                            if (commentsTextarea && response.comments) {
+                                commentsTextarea.value = response.comments;
                             }
                         });
                     });

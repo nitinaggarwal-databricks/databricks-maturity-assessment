@@ -145,9 +145,10 @@ body {
     margin-top: 1rem;
 }
 
-.pain-points-section select[multiple] {
-    min-height: 120px;
-    max-height: 200px;
+.pain-points-section select[multiple],
+.form-select[multiple] {
+    min-height: 80px;
+    max-height: 120px;
     overflow-y: auto;
 }
 
@@ -160,9 +161,31 @@ body {
     border-bottom: none;
 }
 
-.pain-points-section select[multiple] option:checked {
+.pain-points-section select[multiple] option:checked,
+.form-select[multiple] option:checked {
     background-color: var(--primary-color);
     color: white;
+}
+
+/* Single row layout styling */
+.question-card .row.g-3 {
+    margin-bottom: 1rem;
+}
+
+.question-card .form-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.question-card .form-text {
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+.question-card textarea {
+    resize: vertical;
+    min-height: 80px;
 }
 
 .pain-points-section h6 {
